@@ -1,0 +1,39 @@
+﻿@model Cliente
+
+<div class="mb-3">
+    <label asp-for="Nome"></label>
+    <input asp-for="Nome" class="form-control" required />
+</div>
+
+<div class="mb-3">
+    <label asp-for="Data"></label>
+    <input asp-for="Data" class="form-control" />
+</div>
+
+<div class="row mb-3">
+    <div class="col">
+        <label asp-for="Peso"></label>
+        <input asp-for="Peso" class="form-control" />
+    </div>
+
+    <div class="col">
+        <label asp-for="Altura"></label>
+        <input asp-for="Altura" class="form-control" />
+    </div>
+
+</div>
+
+<div class="mb-3">
+    <label asp-for="Genero">Gênero</label>
+    <select asp-for="Genero" class="form-select">
+        <option>Selecione</option>
+        <option value="Masculino">Masculino</option>
+        <option value="Feminino">Feminino</option>
+        <option value="Outro">Outro</option>
+    </select>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Estado">Estado</label>
+    <select asp-for="Estado" class="form-select" asp-items="@Html.GetEnumSelectList<Estado>()"></select>
+</div>

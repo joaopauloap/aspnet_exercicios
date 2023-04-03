@@ -1,0 +1,36 @@
+﻿@model Animal
+
+<div class="mb-3">
+    <label asp-for="Nome" class="form-label"></label>
+    <input asp-for="Nome" class="form-control" />
+</div>
+
+<div class="mb-3">
+    <label asp-for="Peso" class="form-label"></label>
+    <input asp-for="Peso" class="form-control" />
+</div>
+
+<div class="mb-3">
+    <label asp-for="DataNascimento" class="form-label"></label>
+    <input asp-for="DataNascimento" class="form-control" />
+</div>
+
+<div class="mb-3">
+    <label asp-for="Especie" class="form-label"></label>
+    <select asp-for="Especie" class="form-control" asp-items="@Html.GetEnumSelectList<Especie>()">
+        <option>Selecione</option>
+    </select>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Plano" class="form-label"></label>
+    <select asp-for="PlanoId" class="form-control" asp-items="ViewBag.planos">
+        <option>Nenhum</option>
+    </select>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Castrado" class="form-label"></label>
+    <input asp-for="Castrado" />
+</div>
+

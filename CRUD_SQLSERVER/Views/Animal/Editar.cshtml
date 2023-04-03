@@ -1,0 +1,13 @@
+﻿@model Animal
+
+@{
+    ViewData["Title"] = $"Editar {Model.Nome}";
+}
+
+<h1>Editar @Model.Nome</h1>
+<form asp-action="Editar">
+    <input type="hidden" asp-for="AnimalId" />
+    <partial name="_Form" />
+    <a class="btn btn-outline-secondary" asp-action="Index">Voltar</a> 
+    <input type="submit" class="btn btn-outline-success" value="Salvar" /> 
+</form>

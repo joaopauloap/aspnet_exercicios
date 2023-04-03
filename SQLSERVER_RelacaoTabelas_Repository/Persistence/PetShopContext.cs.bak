@@ -1,0 +1,14 @@
+﻿using ASP.NET_Exemplo03.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace ASP.NET_Exemplo03.Persistence
+{
+    public class PetShopContext : DbContext
+    {
+        public DbSet<Animal> Animais { get; set; }
+        public PetShopContext(DbContextOptions op) : base(op)
+        {
+
+        }
+    }
+}

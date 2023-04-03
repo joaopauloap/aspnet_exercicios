@@ -1,0 +1,94 @@
+﻿@inject UserManager<Cliente> UserManager
+@inject SignInManager<Cliente> SignInManager
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ProjetoBanco.styles.css" asp-append-version="true" />
+    <link rel="shortcut icon" href="~/other.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body class="bg-color">
+
+
+    <!--navbar do layout-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-warning border-bottom box-shadow mb-3">
+        <div class="container-fluid">
+
+            <!--Logo-->
+            <a class="navbar-brand text-white" asp-area="" asp-controller="home" asp-action="index"><img width="50px" height="30px" src="~/img/foursys-logo2.png" alt="logo foursys" /></a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!--botões do layout-->
+            <div class="navbar-collapse collapse">
+
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                    <!--botão login e cadastro-->
+                    <partial name="_LoginPartial" />
+
+                    @{
+                        if (SignInManager.IsSignedIn(User))
+                        {
+                            <!--botão conta-->
+                            <li class="nav-item nav-fonte">
+                                <a class="nav-link text-white" asp-controller="Conta" asp-action="Index">Minha Conta</a>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+
+
+            <!--menu perfil do usuário-->
+            @{
+                if (SignInManager.IsSignedIn(User))
+                {
+                    var user = await UserManager.GetUserAsync(User);
+
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                            <span class="text-white me-2">@user.Nome</span>
+                            <img class="foto" src="~/img/undraw_profile.svg">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                    <button id="logout" type="submit" class="nav-link btn btn-link text-white">Sair</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                }
+            }
+
+        </div>
+    </nav>
+
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <footer class="border-top footer text-muted">
+        <div class="text-center">
+            &copy; 2022 - ASPBank - <a asp-controller="Home"></a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

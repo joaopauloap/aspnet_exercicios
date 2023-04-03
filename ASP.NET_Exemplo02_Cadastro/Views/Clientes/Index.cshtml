@@ -1,0 +1,181 @@
+﻿@model Cliente
+
+@{
+    ViewData["Title"] = "Clientes";
+}
+
+<button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="liveToast" class="toast" role="alert">
+        <div class="toast-header">
+            <strong class="me-auto">Clientes</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+        </div>
+        <div class="toast-body">
+            Cliente removido com sucesso!
+        </div>
+    </div>
+</div>
+
+<!-- Modal Remover -->
+<div class="modal fade" id="modalRemover" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Remover cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <p>Deseja realmente remover este cliente?</p>
+            </div>
+
+            <div class="modal-footer">
+                <form class="form" asp-action="Remover">
+                    <input type="hidden" id="idCliente" name="id" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
+                    <button type="submit" class="btn btn-success">Sim</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Cadastrar -->
+<div class="modal fade" id="modalCadastrar" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Novo usuário</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form class="form" asp-action="Cadastrar">
+                    <div class="mb-3">
+                        <label asp-for="Nome"></label>
+                        <input asp-for="Nome" class="form-control" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Data"></label>
+                        <input asp-for="Data" class="form-control" required />
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label asp-for="Peso"></label>
+                            <input asp-for="Peso" class="form-control" />
+                        </div>
+
+                        <div class="col">
+                            <label asp-for="Altura"></label>
+                            <input asp-for="Altura" class="form-control" />
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Genero">Gênero</label>
+                        <select asp-for="Genero" class="form-select">
+                            <option>Selecione</option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Feminino">Feminino</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Estado">Estado</label>
+                        <select asp-for="Estado" class="form-select" asp-items="@Html.GetEnumSelectList<Estado>()"></select>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Voltar</button>
+                        <button type="submit" class="btn btn-primary">Cadastrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center">
+
+    <div class="d-flex">
+        <h1>Clientes</i></h1>
+        <button class="btn btn-primary ms-3 rounded-circle" data-bs-toggle="modal" data-bs-target="#modalCadastrar">
+            <i class="bi bi-person-plus" style="font-size: 1.6rem;">&nbsp;</i>
+        </button>
+    </div>
+
+    <br />
+
+    @if (TempData["msg"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["msg"]
+        </div>
+    }
+
+    @if (ViewBag.listaClientes.Count > 0)
+    {
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Data de Nascimento</th>
+                <th>Peso</th>
+                <th>Altura</th>
+                <th>Gênero</th>
+                <th>Estado</th>
+                <th>Ações</th>
+            </tr>
+
+            @foreach (Cliente cliente in ViewBag.listaClientes)
+            {
+                <tr>
+                    <td>@cliente.Id</td>
+                    <td>@cliente.Nome</td>
+                    <td>@cliente.Data.ToShortDateString()</td>
+                    <td>@cliente.Peso</td>
+                    <td>@cliente.Altura</td>
+                    <td>@cliente.Genero</td>
+                    <td>@cliente.Estado</td>
+
+                    <td>
+                        <button class="btn btn-warning">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+
+                        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalRemover" onclick="idCliente.value = @cliente.Id">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            Nenhum cliente cadastrado!
+        </div>
+    }
+
+</div>
+
+<script>
+    const toastTrigger = document.getElementById('liveToastBtn')
+    const toastLiveExample = document.getElementById('liveToast')
+
+    if (toastTrigger) {
+      toastTrigger.addEventListener('click', function(){
+        const toast = new bootstrap.Toast(toastLiveExample)
+        toast.show()
+      })
+    }
+</script>

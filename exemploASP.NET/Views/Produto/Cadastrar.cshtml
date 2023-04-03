@@ -1,0 +1,50 @@
+﻿@model Produto
+
+@{
+    ViewData["title"] = "Cadastrar";
+}
+
+<h1>Cadastrar produto</h1>
+
+@if (ViewBag.prod != null)
+{
+        <div class="alert alert-primary">
+            ViewData nome: @ViewData["nome"]<br />
+            ViewBag preco: @ViewBag.preco<br />
+            ViewBag quantidade: @ViewBag.prod.Quantidade<br />
+            Model nome: @Model.Nome
+        </div>
+}
+
+@if (TempData["msg"] != null)
+{
+        <div class="alert alert-success">
+        @TempData["msg"]<br>
+        @TempData["nome"]<br>
+
+        </div>
+}
+
+
+<form method="post">
+    <div class="mb-3">
+    <label class="form-label" asp-for="Nome"></label>    <!--  <label class="form-label" for="id-nome">Nome</label>-->
+    <input class="form-control" asp-for="Nome"/>    <!--<input class="form-control" type="text" name="nome" id="id-nome"/>-->
+    <br />
+    </div>
+
+     <div class="mb-3">
+    <label class="form-label" asp-for="Quantidade"></label>    <!--<label class="form-label" for="id-quantidade">Quantidade</label>-->
+    <input class="form-control" asp-for="Quantidade"/>    <!--<input class="form-control" type="number" name="quantidade" id="id-quantidade"/>-->
+    <br />
+    </div>
+
+     <div class="mb-3">
+    <label class="form-label" asp-for="Preco"></label>  <!--<label class="form-label" for="id-preco">Preço</label>-->
+    <input class="form-control" asp-for="Preco"/>  <!--<input class="form-control" type="number" name="preco" id="id-preco"/>-->
+    <br />
+    </div>
+
+    <input class="btn btn-success" type="submit" value="Cadastrar" />
+
+</form>

@@ -1,0 +1,276 @@
+﻿@model ClienteViewModel
+@{
+    ViewData["Title"] = "Conta";
+}
+
+@section Scripts {
+    <script>mostrarSaldo()</script>
+}
+
+    <mensagem texto="@TempData["msg"]"></mensagem>
+    <erro texto="@TempData["erro"]"></erro>
+
+
+    <div class="mb-4">
+        <h3 class="titulo">
+            Bem vindo a sua conta @Model.Conta.Tipo, @Model.Cliente.Nome <span class="badge tipo-conta rounded-pill text-bg-primary">@Model.Cliente.TipoCliente</span>
+        </h3>
+    </div>
+
+    <div class="row justify-content-center">
+
+        <!-- Card Saldo -->
+        <div class="col-xl-4 col-md-6 mb-4 card-cursor">
+            <div class="card rounded-start border-5 shadow h-100 py-2">
+                <div class="card-body ">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Saldo Bancário
+                            </div>
+                            <input size="12" class="inputSaldo" type="text" id="saldo" value="@Model.Conta.Saldo.ToString("C")" disabled />
+                        </div>
+                        <div id="simbol" class="col-auto card-conta" onclick="mostrarSaldo()">
+                            <i class="fa-solid fa-2x fa-eye" id="olho"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transferir -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <a class="card-conta text-gray-300" data-bs-toggle="modal" data-bs-target="#modalTransferir" asp-action="Transferir">
+                <div class="card shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    Transferir
+                                </div>
+
+                                <div class="row no-gutters align-items-center text-center">
+                                    <div>
+                                        <i class="fa-solid fa-money-bill-transfer fa-3x"></i>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Depositar -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <a class="card-conta text-gray-300" data-bs-toggle="modal" data-bs-target="#modalDepositar" asp-action="Depositar">
+                <div class="card shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    Depositar
+                                </div>
+                                <div class="row no-gutters align-items-center text-center">
+                                    <div>
+                                        <i alt="Clique para fazer um depósito" class="fa-solid fa-sack-dollar fa-3x"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+
+    <hr />
+
+
+    <!--MENU PIX-->
+    <h4 class="text-black"><i class="fa-brands fa-pix me-2 mb-2"></i>Minhas chaves Pix <a class="btn btn-warning ms-4" data-bs-toggle="modal" data-bs-target="#modalCadastrarPix" asp-action="CadastrarPix">Nova chave Pix</a></h4>
+
+    <!-- Modal Confirmação Remoção -->
+    <div class="modal fade" id="ModalRemover" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar remoção de chave PIX</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Tem certeza que deseja remover esta chave pix?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
+                    <form asp-action="RemoverChave" asp-controller="ChavePix">
+                        <input type="hidden" id="chavePixId" name="chaveId" />
+                        <button type="submit" class="btn btn-warning">Confirmar</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- LISTA CHAVES PIX-->
+    <div class="list-group w-auto mt-3">
+
+        @foreach (ChavePix chavepix in Model.ListaChavesPix)
+    {
+        <div class="list-group-item d-flex gap-3 py-3">
+            @switch (chavepix.Tipo)
+            {
+                case TipoChavePix.Cpf:
+                    <i class="fa-solid fa-user fa-2x"></i>
+                    break;
+                case TipoChavePix.Email:
+                    <i class="fa-solid fa-at fa-2x"></i>
+                    break;
+                case TipoChavePix.Telefone:
+                    <i class="fa-solid fa-phone fa-2x"></i>
+                    break;
+                case TipoChavePix.Aleatoria:
+                    <i class="fa-solid fa-key fa-2x"></i>
+                    break;
+            }
+            <div class="d-flex gap-2 w-100 justify-content-between">
+                <div>
+                    <h6 class="mb-0">@chavepix.Tipo</h6>
+                    <p class="mb-0 opacity-75">@chavepix.Chave</p>
+                </div>
+                <a data-bs-toggle="modal" data-bs-target="#ModalRemover" class="btn btn-outline-danger ms-2 me-2" onclick="chavePixId.value = @chavepix.ChavePixId"><i class="fa-solid fa-trash"></i></a>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Modal Transferir-->
+<div class="modal fade" id="modalTransferir">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Transferir</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+
+                <!--Saldo do banco-->
+                <p>Saldo Bancário: <b class="text-white">@Model.Conta.Saldo.ToString("C")</b></p>
+                <p>Preencha os campos abaixo</p>
+
+                <!--Campos-->
+                <form asp-action="Transferir">
+
+                    <!--Campo selecionar Chave-->
+                    <div class="mb-3">
+                        <label class="form-label">Tipo de Chave</label>
+                        <select name="tipoChave" asp-items="@Html.GetEnumSelectList<TipoChavePix>()" class="form-control" required>
+                            <option value="">Selecione</option>
+                        </select>
+                    </div>
+
+                    <!--Campo numero Chave-->
+                    <div class="mb-3 input-group">
+                        <span class="input-group-text"><i class="fas fa-solid fa-key"></i></span>
+                        <input name="chavePix" type="text" class="form-control" placeholder="Digite a chave" required />
+                    </div>
+
+                    <!--Campo valor-->
+                    <div class="mb-3 input-group">
+                        <span class="input-group-text"><i class="fas fa-solid fa-dollar-sign"></i></span>
+                        <input name="valor" type="number" step="any" min="0" class="form-control" placeholder="Digite o Valor" required />
+                    </div>
+
+                    <!--Botões-->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-warning">Transferir</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Depositar-->
+<div class="modal fade" id="modalDepositar">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Depositar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+
+                <!--Saldo do banco-->
+                <p>Saldo Bancário: @Model.Conta.Saldo.ToString("C")</p>
+                <p>Preencha o campo abaixo</p>
+
+                <!--Campos-->
+                <form asp-action="Depositar">
+
+                    <!--Campo valor-->
+                    <div class="mb-3 input-group">
+                        <span class="input-group-text"><i class="fas fa-solid fa-dollar-sign"></i></span>
+                        <input name="valor" type="number" step="any" min="0" class="form-control" placeholder="Digite o Valor" required />
+                    </div>
+
+                    <!--Botões-->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-warning">Depositar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Cadastrar PIX-->
+<div class="modal fade" id="modalCadastrarPix">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cadastrar Chave Pix</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+
+                <!--Saldo do banco-->
+                <p>Preencha os campos abaixo</p>
+
+                <!--Campos-->
+                <form asp-action="CadastrarPix" asp-controller="ChavePix">
+
+                    <!--Campo selecionar Chave-->
+                    <div class="mb-3">
+                        <label class="form-label">Tipo de Chave</label>
+                        <select name="Tipo" id="tipoChavePix" asp-items="@Html.GetEnumSelectList<TipoChavePix>()" class="form-control" required>
+                            <option value="">Selecione</option>
+                        </select>
+                    </div>
+
+                    <!--Campo numero chave-->
+                    <div class="mb-3 input-group" id="divChave">
+                        <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
+                        <input name="Chave" id="inputChave" type="text" class="form-control" placeholder="Digite a Chave" required />
+                    </div>
+
+                    <!--Botões-->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-warning">Confirmar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

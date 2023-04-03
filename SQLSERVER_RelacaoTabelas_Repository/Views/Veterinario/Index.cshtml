@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Listagem de Veterinarios";
+}
+<mensagem texto="@TempData["msg"]"></mensagem>
+<h1>Listagem de Veterinarios</h1>
+<a class="btn btn-primary" asp-action="Cadastrar">Cadastrar</a>
+<table class="table">
+    <tr>
+        <th>Id</th>
+        <th>Nome</th>
+        <th>Especialidade</th>
+        <th>Data de Contratação</th>
+        <th>Tipo de Contrato</th>
+        <th>Valor do Contrato</th>
+    </tr>
+
+    @foreach (Veterinario veterinario in Model)
+    {
+        <tr>
+            <td>@veterinario.VeterinarioId</td>
+            <td>@veterinario.Nome</td>
+            <td>@veterinario.Especialidade</td>
+            <td>@veterinario.ContratoTrabalho.DataContratacao.ToShortDateString()</td>
+            <td>@veterinario.ContratoTrabalho.Tipo</td>
+            <td>@veterinario.ContratoTrabalho.Valor</td>
+        </tr>
+    }
+
+</table>

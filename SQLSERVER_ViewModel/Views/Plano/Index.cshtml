@@ -1,0 +1,62 @@
+﻿@model PlanoViewModel
+@{
+    ViewData["Title"] = "Planos";
+}
+
+<h1>Planos</h1>
+
+<div class="row">
+    <div class="col">
+        <h2>Cadastro</h2>
+        @if (TempData["msg"] != null)
+        {
+            <div class="alert alert-success">@TempData["msg"]</div>
+
+        }
+        </hr>
+        <form asp-action="Cadastrar">
+
+            <div class="mb-3">
+                <label asp-for="Plano.Nome" class="form-label"></label>
+                <input asp-for="Plano.Nome" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Plano.Valor" class="form-label"></label>
+                <input asp-for="Plano.Valor" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" asp-for="Plano.Disponivel" />
+                    <label class="form-check-label" asp-for="Plano.Disponivel"></label>
+                </div>
+            </div>
+
+            <input type="submit" class="btn btn-primary" value="Cadastrar" />
+        </form>
+    </div>
+
+    <div class="col">
+        <h2>Listagem</h2>
+        <hr />
+        <table class="table">
+            <tr>
+                <th>Nome</th>
+                <th>Valor</th>
+                <th>Disponível</th>
+            </tr>
+            @foreach (Plano plano in Model.Lista    )
+            {
+                <tr>
+                    <td>@plano.Nome</td>
+                    <td>@plano.Valor.ToString("C")</td>
+                    <td>@(plano.Disponivel?"Sim":"Não")</td>
+                </tr>
+
+            }
+        </table>
+    </div>
+
+</div>
+

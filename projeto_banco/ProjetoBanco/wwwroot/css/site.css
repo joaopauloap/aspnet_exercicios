@@ -1,0 +1,115 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+.titulo {
+    font-weight: 400;
+    Color: #0d0d0d;
+    font-size: 1.5rem;
+}
+
+.navbar-brand:hover {
+    transform: scale(1.2);
+}
+
+.nav-fonte {
+    font-size: 1.3rem;
+}
+
+    .nav-fonte :hover {
+        font-weight: bold;
+    }
+
+.bg-color {
+    background-color: #EBEDEF;
+}
+
+.list-group-item:hover {
+    background-color: darkorange !important;
+}
+
+.list-group-item-action:focus, .list-group-item-action:hover {
+    background-color: darkorange !important;
+}
+
+.gradient-custom-2 {
+    /* Created with https://www.css-gradient.com */
+    background: #CC9A36;
+    background: -webkit-linear-gradient(top left, #CC9A36, #E06A30);
+    background: -moz-linear-gradient(top left, #CC9A36, #E06A30);
+    background: linear-gradient(top bottom right, #CC9A36, #E06A30);
+}
+
+.btn-teste {
+    background-color: Transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+}
+
+.cor-fonte {
+    color: #F39C12
+}
+
+.peso_fonte {
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+
+.peso-fonte-citacao {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.card-conta {
+    text-decoration: none;
+    color: lightgray;
+}
+
+    .card-conta :hover {
+        color: darkorange
+    }
+
+.card-cursor {
+    cursor: pointer;
+}
+
+.foto{
+    width: 40px;
+    height: 40px;
+}
+
+.tipo-conta {
+    background-color: lightsalmon;
+    border-radius: 3px;
+}
+
+.icone{
+    width: 5px;
+    height: 5px;
+}
+
+.inputSaldo {
+    border:none;
+    outline:none;
+    background-color:transparent;
+    color:gray;
+    font-size:x-large;
+}

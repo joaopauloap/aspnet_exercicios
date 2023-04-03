@@ -1,0 +1,88 @@
+﻿@inject UserManager<Cliente> UserManager
+@inject SignInManager<Cliente> SignInManager
+@{
+    ViewData["Title"] = "ASPBank - Inicial";
+}
+<mensagem texto="@TempData["msg"]" class="alert alert-primary"></mensagem>
+
+<section class="h-100 gradient-form" style="background-color: #eee;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-xl-10">
+                <div class="card rounded-3 text-black">
+                    <div class="row g-0">
+                        <div class="col-lg-6">
+                            <div class="card-body p-md-5 mx-md-4">
+
+                                @{
+                                    var user = await UserManager.GetUserAsync(User);
+
+                                    <div class="text-center">
+                                        <!--Logo Foursys-->
+                                        <img src="~/img/logo_empresa.png"
+                                         style="width: 185px;" alt="Logo da Foursys">
+                                    </div>
+
+                                    if (!SignInManager.IsSignedIn(User))
+                                    {
+                                        <form class="text-center">
+                                            <h4 class="mt-3 mb-5 pb-1">Bem-Vindo ao ASPBank!</h4>
+                                            <!--Local de Login-->
+                                        <p class="text-white-50 text-center">Já tem conta? Acesse aqui: </p>
+                                            <div class="mb-4 text-center">
+                                                <button class="btn btn-warning btn-block btn-lg gradient-custom-2 text-white" asp-area="Identity" asp-page="/Account/Login" style="width: 200px;">
+                                                    Entrar
+                                                </button>
+                                            </div>
+
+                                            <!--Local de Cadastrar-->
+                                        <p class="text-white-50 text-center ">Não tem conta? Cadastre-se: </p>
+                                            <div class="mb-4 text-center">
+                                                <button class="btn btn-warning btn-lg btn-block gradient-custom-2 text-white" asp-area="Identity" asp-page="/Account/Register" style="width: 200px;">
+                                                    Cadastrar
+                                                </button>
+                                            </div>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <div class="mt-5 text-center">
+                                            <h4>Bem-Vindo ao ASPBank, @user.Nome</h4>
+                                            <p class="text-white mt-3">
+                                                Para acessar sua conta <a asp-action="Index" asp-controller="Conta">Clique Aqui</a>
+                                            </p>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+
+                        <!--Área de texto-->
+                        <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+                            <div class="text-black px-3 py-4 p-md-5 mx-md-4">
+
+                                <!--Título-->
+                                <h4 class="mb-4">Somos mais que um banco</h4>
+
+                                <!--Parágrafo-->
+                                <p class="small peso_fonte mb-4" style="text-align: justify;">
+                                    Nos preocupamos muito com o bem-estar dos nossos clientes, e sempre priorizamos as suas necessidades. Temos um lema na Foursys que diz "o ser sempre está no centro da questão". E nós fazemos isso valer, nossos colaboradores sempre se esforçam ao máximo para trazer uma ótima experiência para os nossos clientes. Venha fazer parte também da nossa família.
+                                </p>
+
+                                <!--Citação-->
+                                <figure class="text-center">
+                                    <blockquote class="blockquote">
+                                        <p class="peso-fonte-citacao"><i>"O mais importante de tudo é o ser no centro da questão"</i></p>
+                                    </blockquote>
+                                    <figcaption class="blockquote-footer">
+                                        Fábio Carmo in <cite title="Fourcamp">FourCamp</cite>
+                                    </figcaption>
+                                </figure>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

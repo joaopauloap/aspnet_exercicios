@@ -1,0 +1,170 @@
+﻿@model Cliente
+
+@{
+    ViewData["Title"] = "Clientes";
+}
+
+@section Scripts{
+
+    @if (TempData["msg"] != null)
+    {
+        <script>
+            const toastDiv = document.getElementById('toastMsg')
+            new bootstrap.Toast(toastDiv).show()
+        </script>
+    }
+
+    @if (@TempData["edicao"] != null)
+    {
+        <script>
+            const myModal = new bootstrap.Modal(document.getElementById('modalEditar'))
+            myModal.show()
+        </script>
+    }
+}
+
+    <!-- Toast Popup Mensagens -->
+    <div class="toast-container position-absolute top-50 start-50 translate-middle">
+        <div id="toastMsg" class="toast" role="alert">
+            <div class="toast-header">
+                <i class="bi bi-info-circle me-2"></i>
+                <strong class="me-auto">Clientes</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body">
+                @TempData["msg"]
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Remover -->
+    <div class="modal fade" id="modalRemover" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Remover cliente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <p>Deseja realmente remover este cliente?</p>
+                </div>
+
+                <div class="modal-footer">
+                    <form class="form" asp-action="Remover">
+                        <input type="hidden" id="idCliente" name="id" />
+                        <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="Não">
+                        <botao></botao>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar -->
+    <div class="modal fade" id="modalEditar" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar usuário</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form asp-controller="Clientes" asp-action="Editar">
+                        <input type="hidden" asp-for="Id" value="@ViewBag.objCliente.Id" />
+                        <partial name="_Form" />
+                        <div class="modal-footer">
+                            <a class="btn btn-secondary" data-bs-dismiss="modal" value="Voltar">Voltar</a>
+                            <botao></botao>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal Cadastrar -->
+    <div class="modal fade" id="modalCadastrar" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Novo usuário</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form asp-action="Cadastrar">
+                        <partial name="_Form" />
+                        <div class="modal-footer">
+                            <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="Voltar">
+                            <botao></botao>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center">
+
+        <div class="d-flex">
+            <h1>Clientes</h1>
+            <button onclick="@Model." class="btn btn-primary ms-3 rounded-circle" data-bs-toggle="modal" data-bs-target="#modalCadastrar">
+                <i class="bi bi-person-plus" style="font-size: 1.6rem;">&nbsp;</i>
+            </button>
+        </div>
+
+        <br />
+
+        @if (ViewBag.listaClientes.Count > 0)
+    {
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Data de Nascimento</th>
+                <th>Peso</th>
+                <th>Altura</th>
+                <th>Gênero</th>
+                <th>Estado</th>
+                <th>Ações</th>
+            </tr>
+
+            @foreach (Cliente cliente in ViewBag.listaClientes)
+            {
+                <tr>
+                    <td>@cliente.Id</td>
+                    <td>@cliente.Nome</td>
+                    <td>@cliente.Data.ToShortDateString()</td>
+                    <td>@cliente.Peso</td>
+                    <td>@cliente.Altura</td>
+                    <td>@cliente.Genero</td>
+                    <td>@cliente.Estado</td>
+
+                    <td>
+                        <a class="btn btn-warning" asp-controller="Clientes" asp-action="Editar" asp-route-id="@cliente.Id">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+
+                        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalRemover" onclick="idCliente.value = @cliente.Id">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-danger alert-dismissible fade show py-2">
+            <i class="bi bi-exclamation-circle my-4"></i>
+            Nenhum cliente cadastrado!
+        </div>
+    }
+
+</div>

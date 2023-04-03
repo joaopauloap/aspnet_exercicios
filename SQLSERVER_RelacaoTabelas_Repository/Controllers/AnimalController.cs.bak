@@ -1,0 +1,54 @@
+﻿using ASP.NET_Exemplo03.Models;
+using ASP.NET_Exemplo03.Persistence;
+using Microsoft.AspNetCore.Mvc;
+
+namespace ASP.NET_Exemplo03.Controllers
+{
+    public class AnimalController : Controller
+    {
+        private PetShopContext _context;
+
+        public AnimalController(PetShopContext context)
+        {
+            _context = context;
+
+        }
+
+        public IActionResult Index()
+        {
+            List<Animal> animais = _context.Animais.ToList();
+            return View(animais);
+        }
+
+        [HttpGet]
+        public IActionResult Cadastrar()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Cadastrar(Animal animal)
+        {
+            _context.Animais.Add(animal);
+            _context.SaveChanges();
+            TempData["msg"] = "Animal cadastrado com sucesso";
+            return RedirectToAction("Cadastrar");
+        }
+
+        [HttpGet]
+        public IActionResult Editar(int id)
+        {
+            Animal animal = _context.Animais.Find(id);
+            return View(animal);
+        }
+
+        [HttpPost]
+        public IActionResult Editar(Animal animal)
+        {
+            _context.Animais.Update(animal);
+            _context.SaveChanges();
+            TempData["msg"] = "Animal editado com sucesso";
+            return RedirectToAction("Index");
+        }
+    }
+}

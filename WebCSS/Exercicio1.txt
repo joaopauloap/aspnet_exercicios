@@ -1,0 +1,3 @@
+1) Qual é a melhor forma de declarar um código CSS em um documento HTML? (Justifique sua resposta)
+
+R: A melhor forma é através do CSS Externo, com o documento separado do HTML, pois assim as regras de formatação podem ser usadas por outras páginas HTML. 

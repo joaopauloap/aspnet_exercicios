@@ -1,0 +1,64 @@
+﻿@model Animal
+
+@{
+    ViewData["Title"] = "Consultas " + Model.Nome;
+}
+
+<h1>@Model.Nome <span class="badge bg-primary rounded-pill">@Model.Especie</span></h1>
+
+<table class="table">
+    <tr>
+        <th>Peso</th>
+        <th>Castrado</th>
+        <th>Data de Nascimento</th>
+        <th>Espécies</th>
+        <th>Plano</th>
+    </tr>
+    <tr>
+        <td>@Model.Peso</td>
+        <td>@(Model.Castrado?"Sim":"Não")</td>
+        <td>@Model.DataNascimento.ToShortDateString()</td>
+        <td>@Model.Especie</td>
+        <td>@Model.Plano?.Nome</td>
+    </tr>
+</table>
+
+<hr />
+
+<h2>Consultas</h2>
+
+@if (TempData["msg"] != null)
+{
+    <div class="alert alert-success">@TempData["msg"]</div>
+}
+<form asp-action="AgendarConsulta">
+    <input type="hidden" name="animalId" value="@Model.AnimalId" />
+    <div class="row">
+        <div class="col">
+            <select name="veterinarioId" asp-items="ViewBag.veterinarios" class="form-control">
+                <option>Veterinarios</option>
+            </select>
+        </div>
+
+        <div class="col">
+            <input type="datetime-local" name="dataHora" class="form-control" />
+        </div>
+
+        <div class="col">
+            <input type="submit" value="Agendar" class="btn btn-primary" />
+        </div>
+
+    </div>
+
+</form>
+
+<hr />
+
+<ul class="list-group">
+    @foreach (AnimalVeterinario consulta in ViewBag.consultas)
+    {
+        <li class="list-group-item">
+            @consulta.Veterinario.Nome <span class="badge bg-secondary">@consulta.DataHora</span>
+        </li>
+    }
+</ul>

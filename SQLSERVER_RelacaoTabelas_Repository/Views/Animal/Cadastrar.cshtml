@@ -1,0 +1,12 @@
+﻿@model Animal
+
+@{
+    ViewData["Title"] = "Cadastrar Animal";
+}
+
+<h1>Cadastrar Animal</h1>
+
+<form asp-action="Cadastrar">
+    <partial name="_Form"/>
+    <input type="submit" class="btn btn-outline-success" value="Cadastrar" />
+</form>

@@ -1,0 +1,8 @@
+padrão MVC - Model-View-Controller
+
+
+
+responsabilidades da classe controller:
+	-recuperar dados enviados da view
+	-interagir com model
+	-enviar dados para view

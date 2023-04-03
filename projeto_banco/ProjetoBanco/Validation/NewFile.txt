@@ -1,0 +1,9 @@
+﻿int idade = DateTime.Now - Input.DataNascimento;
+            if (DateTime.Now.DayOfYear < Input.DataNascimento.DayOfYear)
+            {
+                idade = idade - 1;
+            }
+            if (idade < 18)
+            {
+                
+            }
